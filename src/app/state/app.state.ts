@@ -1,6 +1,6 @@
-import { ProductState } from './../products/state/product.reducer';
+// import { ProductState } from './../products/state/product.reducer';
 
 export interface State {
-  product: ProductState;
+//   product: ProductState;
   user: any;
 }
