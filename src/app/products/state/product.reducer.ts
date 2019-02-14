@@ -1,6 +1,7 @@
 import { Product } from './../product';
 import * as fromRoot from '../../state/app.state';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { ProductActions, ProductActionTypes } from './product.actions';
 
 export interface State extends fromRoot.State {
   products: ProductState;
@@ -10,12 +11,14 @@ export interface ProductState {
   showProductCode: boolean;
   currentProductId: number;
   products: Product[];
+  error: string;
 }
 
 const initialState: ProductState = {
   showProductCode: false,
   currentProductId: 0,
-  products: []
+  products: [],
+  error: ''
 };
 
 const getProductFeatureState = createFeatureSelector<ProductState>('products');
@@ -35,16 +38,33 @@ export const getProducts = createSelector(
   state => state.products
 );
 
+export const getError = createSelector(
+  getProductFeatureState,
+  state => state.error
+);
+
 export const getCurrentProduct = createSelector(
   getCurrentProductId,
   getProducts,
   (id, products) => products.find(p => p.id === id)
 );
 
-export function reducer(state = initialState, action): ProductState {
+export function reducer(
+  state = initialState,
+  action: ProductActions
+): ProductState {
   switch (action.type) {
-    case 'TOGGLE_PRODUCT_CODE':
+    case ProductActionTypes.ToggleProductCode:
       return { ...state, showProductCode: action.payload };
+
+    case ProductActionTypes.SetCurrentProductId:
+      return { ...state, currentProductId: action.payload.id };
+
+    case ProductActionTypes.LoadSuccess:
+      return { ...state, products: action.payload, error: '' };
+
+    case ProductActionTypes.LoadFail:
+      return { ...state, error: action.payload };
 
     default:
       return state;
