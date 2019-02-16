@@ -12,7 +12,10 @@ export enum ProductActionTypes {
   InitializeCurrentProduct = '[Product] InitializeCurrentProduct',
   Load = '[Product] Load',
   LoadSuccess = '[Product] LoadSuccess',
-  LoadFail = '[Product] LoadFail'
+  LoadFail = '[Product] LoadFail',
+  UpdateProduct = '[Product] UpdateProduct',
+  UpdateProductSuccess = '[Product] UpdateProductSuccess',
+  UpdateProductFail = '[Product] UpdateProductFail'
 }
 
 /**
@@ -56,6 +59,24 @@ export class LoadFail implements Action {
   constructor(public payload: string) {}
 }
 
+export class UpdateProduct implements Action {
+  readonly type = ProductActionTypes.UpdateProduct;
+
+  constructor(public payload: Product) {}
+}
+
+export class UpdateProductSuccess implements Action {
+  readonly type = ProductActionTypes.UpdateProductSuccess;
+
+  constructor(public payload: Product) {}
+}
+
+export class UpdateProductFail implements Action {
+  readonly type = ProductActionTypes.UpdateProductFail;
+
+  constructor(public payload: string) {}
+}
+
 /**
  * Export a type alias of all actions in this action group
  * so that reducers can easily compose action types
@@ -67,4 +88,7 @@ export type ProductActions =
   | InitializeCurrentProduct
   | Load
   | LoadSuccess
-  | LoadFail;
+  | LoadFail
+  | UpdateProduct
+  | UpdateProductSuccess
+  | UpdateProductFail;
